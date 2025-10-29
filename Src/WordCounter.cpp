@@ -1,0 +1,2 @@
+#include "../Include/WordCounter.hpp"
+
