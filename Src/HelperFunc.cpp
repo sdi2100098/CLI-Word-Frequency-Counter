@@ -19,6 +19,7 @@ bool CheckArgs(const int &argc,char **argv){
     }
     if(FileExists(argv[1]) == false){
         std::cerr << "First Argument ("<< argv[1] << ")" << " doesn't exist" << std::endl;
+        std::cerr << "Expected Argument : Input/Input.txt" << std::endl;
         return false;
     }
     return true;
