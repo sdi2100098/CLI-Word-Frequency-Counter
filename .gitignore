@@ -1,12 +1,14 @@
-# --- Build & binary outputs ---
-bin/.gitkeep
-obj/.gitkeep
+# Ignore everything inside these folders
+bin/*
+obj/*
+Input/*
+Output/*
 
-# --- Generated data files ---
-Input/.gitkeep
-Output/.gitkeep
+# But keep the .gitkeep files
+!bin/.gitkeep
+!obj/.gitkeep
+!Input/.gitkeep
+!Output/.gitkeep
 
-
-# --- IDE files ---
+# IDE files
 .vscode/
-
