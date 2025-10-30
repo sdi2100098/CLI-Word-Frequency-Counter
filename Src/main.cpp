@@ -9,5 +9,6 @@ int main(int argc,char **argv){
         return 1;
     
     WordCounter CountWords(argv[1],argv[2],atoi(argv[3]));
+    CountWords.PrintMap();
     return 0;
 }

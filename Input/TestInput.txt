@@ -1,0 +1,5 @@
+Hello world!
+This is a small input file for testing the word counter.
+Hello again, world. hello again.
+Counting words, characters, and lines should be easy.
+Punctuation is not included!

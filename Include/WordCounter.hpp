@@ -7,13 +7,15 @@ class WordCounter
 {
 private:
     int N;
-    std::map<std::string,int> WordMap;
+    std::map<std::string,int> WordsMap;
 public:
     WordCounter(const char *,const char *,const int &);
     ~WordCounter();
-    void ReadInput(const char *,std::string &);
+    void ReadInput(const char *);
     void setN(const int &);
     int getN()const;
+    void UpdateWordsMap(const std::string &);
+    void PrintMap();
 };
 
 #endif

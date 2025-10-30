@@ -1,0 +1,12 @@
+# --- Build & binary outputs ---
+bin/.gitkeep
+obj/.gitkeep
+
+# --- Generated data files ---
+Input/.gitkeep
+Output/.gitkeep
+
+
+# --- IDE files ---
+.vscode/
+
