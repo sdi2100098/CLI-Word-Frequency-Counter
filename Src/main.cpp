@@ -1,11 +1,13 @@
 #include <iostream>
 #include <fstream>
+#include "../Include/WordCounter.hpp"
+#include "../Include/HelperFunc.hpp"
 
 int main(int argc,char **argv){
-    if(argc !=4){
-        std::cout << "./WordCount Input.txt Output.txt N \n";
-        std::cout << "Example : ./WordCount Input/MyFile.txt Output/MyOutputFile.txt 100" << std::endl;
-    }
 
+    if(CheckArgs(argc,argv) == false)
+        return 1;
+    
+    WordCounter CountWords(argv[1],argv[2],atoi(argv[3]));
     return 0;
 }
