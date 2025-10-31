@@ -3,15 +3,17 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <vector>
+#include <algorithm>
 
 WordCounter :: WordCounter(const char *InputFilename,const char *OutputFilename,const int &N){
-    std::cout << "Constructor Invoked \n";
+    std::cout << "Constructor Invoked \n\n";
     setN(N);
     ReadInput(InputFilename);
 }
 
 WordCounter :: ~WordCounter(){
-    std::cout << "Destructor Invoked \n";
+    std::cout << "\nDestructor Invoked \n";
 }
 
 void WordCounter :: setN(const int &N){
@@ -34,7 +36,7 @@ void WordCounter :: ReadInput(const char *File){
     // Start processing one Character at a time
     while(FileOpened.get(character)){
 
-        //Ignore Panctuations
+        //Ignore Panctuations   
         if(std::ispunct(character))
             continue;
         
@@ -43,16 +45,31 @@ void WordCounter :: ReadInput(const char *File){
             character = std::tolower(character);
         
         if(std::isspace(character)){
-            UpdateWordsMap(Word);
-            Word.clear();
+            if(Word.empty() == false){
+                UpdateWordsMap(Word);
+                Word.clear();
+            }
             continue;
         }
 
         Word += character;
+
     }
+
+    if(Word.empty() == false){
+            UpdateWordsMap(Word);
+            Word.clear();
+    }
+
+    FileOpened.close();
+
+    // When we Finish reading through the File sort the Map and redirect the output into a new File
+    SortMap();
 }
 
 void WordCounter :: UpdateWordsMap(const std::string &Word){
+    if(Word.empty() == true)
+        return ;
     // Exists in the Map
     if(WordsMap.find(Word)!=WordsMap.end())
         WordsMap[Word] ++;
@@ -60,10 +77,26 @@ void WordCounter :: UpdateWordsMap(const std::string &Word){
         WordsMap[Word] = 1;
 }
 
-void WordCounter :: PrintMap(){
-    int colsize = 20;
+void WordCounter :: SortMap(){
+    int colsize = 15;
+    std::vector<std::pair<std::string,int>> SortedWords;
+    SortedWords.reserve(WordsMap.size());
+    for(auto &item : WordsMap)
+        SortedWords.emplace_back(item);
+
+    // Sort the Vector
+    std::sort(SortedWords.begin(),SortedWords.end(),[](auto &a,auto &b){
+        if(a.second != b.second)
+            return a.second > b.second;
+        return a.first < b.first;
+    });
+
+    if (N < static_cast<int>(SortedWords.size()))
+        SortedWords.resize(N);
+
     std::cout << std::left;
-    std::cout << std::setw(colsize) <<  "Words" << std::setw(colsize) << "Counts" << std::endl;
-    for(auto &element : WordsMap)
-        std::cout << std::setw(colsize) <<  element.first  << std::setw(colsize) << element.second << std::endl;
+    std::cout << std::setw(colsize) << "Words" << std::setw(colsize) << "Count" << std::endl;
+    for(auto &ele : SortedWords)
+        std::cout << std::setw(colsize) << ele.first << " " << std::setw(colsize) << ele.second << std::endl;
+    
 }

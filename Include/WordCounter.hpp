@@ -15,7 +15,7 @@ public:
     void setN(const int &);
     int getN()const;
     void UpdateWordsMap(const std::string &);
-    void PrintMap();
+    void SortMap();
 };
 
 #endif
