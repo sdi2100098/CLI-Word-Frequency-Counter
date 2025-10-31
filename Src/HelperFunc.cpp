@@ -3,7 +3,7 @@
 
 bool FileExists(std::filesystem::path FilePath,std::filesystem::file_status Status = std::filesystem::file_status{},bool verbose = true){
     if(verbose == true)
-        std::cout << "\nInput Path : " << FilePath << std::endl;
+        std::cout << "\nPath : " << FilePath << std::endl;
     if(std::filesystem::status_known(Status) ? std::filesystem::exists(Status) : std::filesystem::exists(FilePath))
         return true;
     return false;

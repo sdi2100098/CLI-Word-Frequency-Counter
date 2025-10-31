@@ -6,6 +6,7 @@ CXXFLAGS = -mavx2 -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 TARGET1 = WordCount
 OBJ_DIR = obj
 BIN_DIR = bin
+OUT_DIR = Output
 
 # Source and test files
 SRC = Src/WordCounter.cpp\
@@ -14,7 +15,7 @@ TEST_SRC = Test/UnitTests.cpp
 OBJ = $(SRC:Src/%.cpp=$(OBJ_DIR)/%.o)
 
 # Default target
-all: $(BIN_DIR)/$(TARGET1)
+all:$(BIN_DIR)/$(TARGET1)
 
 # Build main executable
 $(BIN_DIR)/$(TARGET1): Src/main.cpp $(OBJ)
@@ -28,6 +29,7 @@ $(OBJ_DIR)/%.o: Src/%.cpp
 
 # Run executable with optional arguments
 run: $(BIN_DIR)/$(TARGET1)
+	@mkdir -p $(OUT_DIR)
 	@echo "Executing: ./$(BIN_DIR)/$(TARGET1) $(ARGS)"
 	./$(BIN_DIR)/$(TARGET1) $(ARGS)
 
@@ -41,6 +43,9 @@ test: $(TEST_SRC) $(OBJ)
 valgrind_test: test
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/test_executable
 
+valgrind: run
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/$(TARGET1) $(ARGS)
+
 # Clean
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR) $(OUT_DIR)

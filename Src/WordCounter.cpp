@@ -1,15 +1,16 @@
 #include "../Include/WordCounter.hpp"
+#include "../Include/HelperFunc.hpp"
 #include <cctype>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <vector>
 #include <algorithm>
 
 WordCounter :: WordCounter(const char *InputFilename,const char *OutputFilename,const int &N){
-    std::cout << "Constructor Invoked \n\n";
+    std::cout << "\nConstructor Invoked \n";
     setN(N);
     ReadInput(InputFilename);
+    WriteOutput(OutputFilename);
 }
 
 WordCounter :: ~WordCounter(){
@@ -23,6 +24,18 @@ void WordCounter :: setN(const int &N){
 
 int WordCounter :: getN()const{
     return this->N;
+}
+
+void WordCounter :: WriteOutput(const char *File){
+    if(FileExists(File,{},true) == true){
+        std::cerr << "Output File Already Exists. Choose Different Name" << std::endl;
+        return ;
+    }
+    std::ofstream OutputFile(File,std::ofstream::out);
+    for(auto &element : SortedWords)
+        OutputFile << element.first << " " << element.second << "\n";
+
+    OutputFile.close();
 }
 
 void WordCounter :: ReadInput(const char *File){
@@ -78,8 +91,6 @@ void WordCounter :: UpdateWordsMap(const std::string &Word){
 }
 
 void WordCounter :: SortMap(){
-    int colsize = 15;
-    std::vector<std::pair<std::string,int>> SortedWords;
     SortedWords.reserve(WordsMap.size());
     for(auto &item : WordsMap)
         SortedWords.emplace_back(item);
@@ -93,10 +104,13 @@ void WordCounter :: SortMap(){
 
     if (N < static_cast<int>(SortedWords.size()))
         SortedWords.resize(N);
-
-    std::cout << std::left;
-    std::cout << std::setw(colsize) << "Words" << std::setw(colsize) << "Count" << std::endl;
-    for(auto &ele : SortedWords)
-        std::cout << std::setw(colsize) << ele.first << " " << std::setw(colsize) << ele.second << std::endl;
     
+}
+
+int WordCounter :: getMapSize()const{
+    return static_cast<int>(this->WordsMap.size());
+}
+
+int WordCounter :: getMapValue(std::string Key) const{
+    return this->WordsMap.at(Key);
 }

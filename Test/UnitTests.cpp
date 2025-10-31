@@ -1,5 +1,6 @@
 #include "acutest.h"
 #include "HelperFunc.hpp"
+#include "WordCounter.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -53,11 +54,28 @@ void Test_CheckArgs(){
     }
 }
 
+void Test_Map_Sort(){
+    std::vector<std::string> test_cases  = {
+        "./bin/WordCount", "Input/TestInput.txt", "Output/Output.txt", "100"
+    };
+    int argc = static_cast<int> (test_cases.size());
+    std::vector<char*> argv;
+    argv.reserve(argc);
+    for(auto &element : test_cases)
+        argv.push_back(const_cast<char*>(element.c_str()));
 
+    WordCounter obj(argv[1],argv[2],atoi(argv[3]));
+    TEST_ASSERT(obj.getMapSize() == 25);
+    TEST_ASSERT(obj.getMapValue("hello") == 3);
+    TEST_ASSERT(obj.getMapValue("again") == 2);
+    TEST_ASSERT(obj.getMapValue("is") == 2);
+    TEST_ASSERT(obj.getMapValue("world") == 2);
+}
 
 
 TEST_LIST = {
     {"File Existing Function",Test_FileExists},
     {"Arguments Checking Function",Test_CheckArgs},
+    {"Map Sort",Test_Map_Sort},
     {NULL,NULL}
 };
