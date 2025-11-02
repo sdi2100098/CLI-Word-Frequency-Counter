@@ -27,13 +27,16 @@ int WordCounter :: getN()const{
 }
 
 void WordCounter :: WriteOutput(const char *File){
+    int colsize = 15;
     if(FileExists(File,{},true) == true){
         std::cerr << "Output File Already Exists. Choose Different Name" << std::endl;
         return ;
     }
     std::ofstream OutputFile(File,std::ofstream::out);
+    OutputFile << std::left;
+    OutputFile << std::setw(colsize) << "Words" << std::setw(colsize) << "Count" << std::endl;
     for(auto &element : SortedWords)
-        OutputFile << element.first << " " << element.second << "\n";
+        OutputFile << std::setw(colsize) << element.first << std::setw(colsize) << element.second << std::endl;
 
     OutputFile.close();
 }
