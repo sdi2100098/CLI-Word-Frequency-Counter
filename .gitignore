@@ -2,10 +2,13 @@
 obj/
 
 # Generated data files
-Input/
-Output/
+Input/*
+Output/*
+
+!Input/TestInput.txt
+
 
 # IDE files
 .vscode/
 
-!Input/TestInput.txt
+
