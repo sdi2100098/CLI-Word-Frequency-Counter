@@ -6,5 +6,4 @@
 
 bool CheckArgs(const int &,char **,bool);
 bool FileExists(std::filesystem::path ,std::filesystem::file_status,bool);
-
 #endif

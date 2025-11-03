@@ -1,49 +1,89 @@
-# C++ compiler we use
-CXX = g++
-CXXFLAGS = -mavx2 -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+# Makefile - build WordCount, BigFileGen, tests, and helper targets
 
-# Output filenames and directories
-TARGET1 = WordCount
-OBJ_DIR = obj
-BIN_DIR = bin
+# Compiler / flags
+CXX      := g++
+CXXFLAGS := -mavx2 -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
+# You can add debug flags for local dev:
+# DEBUGFLAGS := -g -O0 -fsanitize=address,undefined
+# CXXFLAGS := $(CXXFLAGS) $(DEBUGFLAGS)
 
-# Source and test files
-SRC = Src/WordCounter.cpp\
-	  Src/HelperFunc.cpp
-TEST_SRC = Test/UnitTests.cpp
-OBJ = $(SRC:Src/%.cpp=$(OBJ_DIR)/%.o)
+# Directories / targets
+TARGET1    := WordCount
+OBJ_DIR    := obj
+BIN_DIR    := bin
+SRC_DIR    := Src
+UTILS_DIR  := Utils
+TEST_DIR   := Test
 
-# Default target
-all:$(BIN_DIR)/$(TARGET1)
+# Sources
+SRC := $(SRC_DIR)/WordCounter.cpp \
+       $(SRC_DIR)/HelperFunc.cpp
 
-# Build main executable
-$(BIN_DIR)/$(TARGET1): Src/main.cpp $(OBJ)
+TEST_SRC := $(TEST_DIR)/UnitTests.cpp
+
+# Objects (map Src/*.cpp -> obj/*.o)
+OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
+
+# Big file generator
+BIGFILE_SRC    := $(UTILS_DIR)/BigFileGen.cpp
+BIGFILE_TARGET := $(BIN_DIR)/BigFileGen
+
+# Default target: build product binary
+.PHONY: all
+all: $(BIN_DIR)/$(TARGET1)
+
+# Build main product executable
+$(BIN_DIR)/$(TARGET1): $(SRC_DIR)/main.cpp $(OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ Src/main.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/main.cpp $(OBJ)
+	@echo "Built $@"
 
-# Build object files
-$(OBJ_DIR)/%.o: Src/%.cpp
+# Build object files from Src/*.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+	@echo "Compiled $< -> $@"
 
-# Run executable with optional arguments
+# Big file generator: built standalone (contains its own main)
+.PHONY: biggen $(BIGFILE_TARGET) gen
+$(BIGFILE_TARGET): $(BIGFILE_SRC)
+	@mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $(BIGFILE_SRC)
+	@echo "Built $@"
+
+# Run the product executable with optional ARGS
+# Usage: make run ARGS="input.txt out.txt 100"
+.PHONY: run
 run: $(BIN_DIR)/$(TARGET1)
 	@echo "Executing: ./$(BIN_DIR)/$(TARGET1) $(ARGS)"
-	./$(BIN_DIR)/$(TARGET1) $(ARGS)
+	@./$(BIN_DIR)/$(TARGET1) $(ARGS)
 
-# Test
+# Run the bigfile generator
+# Usage: make gen ARGS="--output corpus.txt --size-mb 200 --mode random"
+.PHONY: gen
+gen: $(BIGFILE_TARGET)
+	@echo "Running bigfile generator: ./$(BIGFILE_TARGET) $(ARGS)"
+	@./$(BIGFILE_TARGET) $(ARGS)
+
+# Build and run unit tests
+.PHONY: test
 test: $(TEST_SRC) $(OBJ)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test_executable $(TEST_SRC) $(OBJ)
-	./$(BIN_DIR)/test_executable
+	@echo "Running tests..."
+	@./$(BIN_DIR)/test_executable
 
-# Valgrind
+# Valgrind targets
+.PHONY: valgrind_test
 valgrind_test: test
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/test_executable
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/test_executable
 
-valgrind: run
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/$(TARGET1) $(ARGS)
+.PHONY: valgrind
+valgrind: $(BIN_DIR)/$(TARGET1)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/$(TARGET1) $(ARGS)
 
-# Clean
+# Clean generated files
+.PHONY: clean
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	@echo "Cleaning $(OBJ_DIR) and $(BIN_DIR)"
+	@rm -rf $(OBJ_DIR) $(BIN_DIR)
