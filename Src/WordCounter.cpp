@@ -115,5 +115,5 @@ int WordCounter :: getMapSize()const{
 }
 
 int WordCounter :: getMapValue(std::string Key) const{
-    return this->UnorderedWordsMap.at(Key);
+    return UnorderedWordsMap.at(Key);
 }
