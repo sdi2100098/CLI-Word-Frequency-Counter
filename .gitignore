@@ -7,3 +7,5 @@ Output/
 
 # IDE files
 .vscode/
+
+!Input/TestInput.txt
