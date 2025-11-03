@@ -1,0 +1,6 @@
+Map elpased : 42.4375 seconds with Input : Input/Huge.txt and N : 100
+Unordered Map elpased : 17.3848 seconds with Input : Input/Huge.txt and N : 100
+Map elpased : 123.041 seconds with Input : Input/Very_Huge.txt and N : 100
+Unordered Map elpased : 43.613 seconds with Input : Input/Very_Huge.txt and N : 100
+Map elpased : 264.719 seconds with Input : Input/Enormous.txt and N : 100
+Unordered Map elpased : 89.5722 seconds with Input : Input/Enormous.txt and N : 100

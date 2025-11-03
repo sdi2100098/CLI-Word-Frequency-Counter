@@ -3,12 +3,13 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 class WordCounter
 {
 private:
     int N;
-    std::map<std::string,int> WordsMap;
+    std::unordered_map<std::string,int> UnorderedWordsMap;
     std::vector<std::pair<std::string,int>> SortedWords;
 public:
     WordCounter(const char *,const char *,const int &);

@@ -13,6 +13,6 @@ int main(int argc,char **argv){
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     std::ofstream out ("Benchmark/Times.txt",std::ios::app);
-    out << "Map elpased : " << elapsed.count() << "seconds with Input : " << argv[1] << " and N : " << argv[3] << " \n ";
+    out << "Unordered sMap elpased : " << elapsed.count() << " seconds with Input : " << argv[1] << " and N : " << argv[3] << "\n";
     return 0;
 }

@@ -87,15 +87,15 @@ void WordCounter :: UpdateWordsMap(const std::string &Word){
     if(Word.empty() == true)
         return ;
     // Exists in the Map
-    if(WordsMap.find(Word)!=WordsMap.end())
-        WordsMap[Word] ++;
+    if(UnorderedWordsMap.find(Word)!=UnorderedWordsMap.end())
+        UnorderedWordsMap[Word] ++;
     else
-        WordsMap[Word] = 1;
+        UnorderedWordsMap[Word] = 1;
 }
 
 void WordCounter :: SortMap(){
-    SortedWords.reserve(WordsMap.size());
-    for(auto &item : WordsMap)
+    SortedWords.reserve(UnorderedWordsMap.size());
+    for(auto &item : UnorderedWordsMap)
         SortedWords.emplace_back(item);
 
     // Sort the Vector
@@ -111,9 +111,9 @@ void WordCounter :: SortMap(){
 }
 
 int WordCounter :: getMapSize()const{
-    return static_cast<int>(this->WordsMap.size());
+    return static_cast<int>(this->UnorderedWordsMap.size());
 }
 
 int WordCounter :: getMapValue(std::string Key) const{
-    return this->WordsMap.at(Key);
+    return this->UnorderedWordsMap.at(Key);
 }
