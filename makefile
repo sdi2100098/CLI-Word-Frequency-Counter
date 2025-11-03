@@ -82,6 +82,23 @@ valgrind_test: test
 valgrind: $(BIN_DIR)/$(TARGET1)
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN_DIR)/$(TARGET1) $(ARGS)
 
+.PHONY: help
+help:
+	@echo "Usage: make <target> [ARGS=\"...\"] [RUNARGS=\"...\"]"
+	@echo
+	@echo "Common targets:"
+	@echo "  all        - build product binary (default)"
+	@echo "  run        - run product:  make run ARGS=\"Input/input.txt Output/out.txt 100\""
+	@echo "  gen        - build+run bigfile generator: make gen ARGS=\"--output corpus.txt --size-mb 200 --mode random\""
+	@echo "  test       - build and run unit tests"
+	@echo "  valgrind   - run product under valgrind: make valgrind ARGS=\"input out N\""
+	@echo "  valgrind_test - run unit tests under valgrind"
+	@echo "  clean      - remove build artifacts (obj/ and bin/)"
+	@echo
+	@echo "Examples:"
+	@echo "  make           # build product"
+	@echo "  make gen ARGS=\"--output corpus.txt --size-mb 200 --mode repeat --word hello\""
+	@echo "  make run ARGS=\"Input/sample_input.txt Output/results.txt 50\""
 # Clean generated files
 .PHONY: clean
 clean:
