@@ -1,5 +1,4 @@
-# Build & binary outputs
-bin/
+# Builds
 obj/
 
 # Generated data files
