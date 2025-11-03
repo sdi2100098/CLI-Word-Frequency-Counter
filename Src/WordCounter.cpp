@@ -111,7 +111,7 @@ void WordCounter :: SortMap(){
 }
 
 int WordCounter :: getMapSize()const{
-    return static_cast<int>(this->UnorderedWordsMap.size());
+    return static_cast<int>(UnorderedWordsMap.size());
 }
 
 int WordCounter :: getMapValue(std::string Key) const{
