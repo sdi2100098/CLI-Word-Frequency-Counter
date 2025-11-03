@@ -11,9 +11,9 @@ A small command-line tool that counts word frequencies from an input text file a
 - Unit tests, Makefile, and GitHub Actions (CI) included.
 
 **Optimizations**
-- We first stored the pairs of strings-frequency using an std::map but changed it to std::unordered map due to faster lookup times( In general O(1) )
+- We first stored the pairs of strings-frequency using an std::map but changed it to std::unordered map due to faster lookup times( In general `O(1)` lookup time)
 - See all related info on total run time in Benchmark/Times.txt
 
 
-# build with Makefile
-Run <make help> to see commands on how to build the executable and run the code
+# Build with Makefile
+Run **`make help`** to see commands on how to build the executable and run the code
