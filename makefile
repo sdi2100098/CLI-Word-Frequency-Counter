@@ -6,7 +6,6 @@ CXXFLAGS = -mavx2 -Wall -std=c++17 -lstdc++ -O3 -fopenmp -IInclude
 TARGET1 = WordCount
 OBJ_DIR = obj
 BIN_DIR = bin
-OUT_DIR = Output
 
 # Source and test files
 SRC = Src/WordCounter.cpp\
@@ -29,7 +28,6 @@ $(OBJ_DIR)/%.o: Src/%.cpp
 
 # Run executable with optional arguments
 run: $(BIN_DIR)/$(TARGET1)
-	@mkdir -p $(OUT_DIR)
 	@echo "Executing: ./$(BIN_DIR)/$(TARGET1) $(ARGS)"
 	./$(BIN_DIR)/$(TARGET1) $(ARGS)
 
@@ -48,4 +46,4 @@ valgrind: run
 
 # Clean
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR) $(OUT_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)

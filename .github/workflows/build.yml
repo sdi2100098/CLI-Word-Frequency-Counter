@@ -3,27 +3,25 @@ on: [push, pull_request]
 
 jobs:
   build-deploy:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04]
+    runs-on: ubuntu-latest         # use GitHub-hosted runner (or keep matrix/os if you need matrix)
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
-    # - name: make run
-    #   run: make run CFLAGS=-fPIC
+      - name: Install valgrind (if needed)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y valgrind
 
-    - name: make test
-      run: make test CFLAGS=-fPIC
+      - name: make test
+        run: make test CFLAGS=-fPIC
 
-    - name: make valgrind_test
-      if: matrix.os == 'ubuntu-20.04'
-      run: |
-        sudo apt install valgrind
-        make valgrind_test CFLAGS=-fPIC
+      - name: make valgrind_test
+        if: runner.os == 'Linux'
+        run: make valgrind_test CFLAGS=-fPIC
 
-    - name: Upload
-      uses: actions/upload-artifact@v3
-      with:
-        name: compiled-${{ matrix.os }}
-        path: .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: compiled-${{ runner.os }}
+          path: ./bin   # upload only the build artifacts directory (less noisy)
